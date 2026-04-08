@@ -20,7 +20,7 @@ function connect(): void {
   });
 
   ws.addEventListener('error', () => {
-    ws?.close();
+    // close event will follow automatically
   });
 }
 
@@ -66,6 +66,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     });
   } else if (msg.type === 'event' && isRecording && currentSessionId) {
     stepCounter++;
+    sendResponse({ ok: true });
     const step = stepCounter;
     const sessionId = currentSessionId;
     // Broadcast updated step count to popup
