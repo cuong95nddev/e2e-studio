@@ -7,6 +7,7 @@
   "engines": {
     "vscode": "^1.110.0"
   },
+  "icon": "assets/logo.png",
   "categories": ["Testing"],
   "activationEvents": [],
   "main": "./dist/extension.js",
