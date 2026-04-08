@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "esbuild src/background.ts --bundle --outfile=dist/background.js --format=esm && esbuild src/content.ts --bundle --outfile=dist/content.js --format=iife",
-    "dev": "esbuild src/background.ts --bundle --outfile=dist/background.js --format=esm --watch & esbuild src/content.ts --bundle --outfile=dist/content.js --format=iife --watch"
+    "build": "esbuild src/background.ts --bundle --outfile=dist/background.js --format=esm && esbuild src/content.ts --bundle --outfile=dist/content.js --format=iife && esbuild src/popup.ts --bundle --outfile=dist/popup.js --format=iife",
+    "dev": "concurrently \"esbuild src/background.ts --bundle --outfile=dist/background.js --format=esm --watch\" \"esbuild src/content.ts --bundle --outfile=dist/content.js --format=iife --watch\" \"esbuild src/popup.ts --bundle --outfile=dist/popup.js --format=iife --watch\""
   },
   "devDependencies": {
     "@types/chrome": "^0.1.39",
+    "concurrently": "^9.2.1",
     "esbuild": "^0.28.0",
     "typescript": "^6.0.2"
   }

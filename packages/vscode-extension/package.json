@@ -4,28 +4,62 @@
   "description": "Record and manage browser test steps from VS Code",
   "version": "0.1.0",
   "publisher": "e2e-studio",
-  "engines": {
-    "vscode": "^1.110.0"
-  },
+  "engines": { "vscode": "^1.110.0" },
   "icon": "assets/logo.png",
   "categories": ["Testing"],
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "e2eStudio.start",
-        "title": "E2E Studio: Start Recording"
-      }
-    ]
+      { "command": "e2eStudio.start", "title": "E2E Studio: Start Recording" },
+      { "command": "e2eStudio.openPanel", "title": "E2E Studio: Open" }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "e2eStudio", "title": "E2E Studio", "icon": "assets/icon.svg" }
+      ]
+    },
+    "views": {
+      "e2eStudio": [
+        { "id": "e2eStudio.sidebar", "name": "Recordings", "type": "webview" }
+      ]
+    }
   },
   "scripts": {
-    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
-    "dev": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch"
+    "build": "npm run build:ext && npm run build:webview",
+    "build:ext": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:better-sqlite3 --format=cjs --platform=node",
+    "build:webview": "vite build",
+    "dev": "concurrently --kill-others-on-fail \"npm run dev:ext\" \"npm run dev:webview\"",
+    "dev:ext": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:better-sqlite3 --format=cjs --platform=node --watch",
+    "dev:webview": "vite build --watch",
+    "test": "vitest run",
+    "rebuild": "electron-rebuild -f -w better-sqlite3"
   },
   "devDependencies": {
+    "@electron/rebuild": "^3.7.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
     "@types/vscode": "^1.110.0",
+    "@types/ws": "^8.5.14",
+    "@vitejs/plugin-react": "^6.0.1",
+    "autoprefixer": "^10.4.27",
+    "concurrently": "^9.2.1",
     "esbuild": "^0.28.0",
-    "typescript": "^6.0.2"
+    "postcss": "^8.5.9",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.7",
+    "vitest": "^3.1.1"
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "better-sqlite3": "^11.9.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.5.0",
+    "ws": "^8.18.2"
   }
 }

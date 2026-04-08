@@ -1,4 +1,10 @@
 src/
-node_modules/
+node_modules/**
+!node_modules/better-sqlite3/**
 tsconfig.json
+vite.config.ts
+vitest.config.ts
+tailwind.config.ts
+postcss.config.js
+components.json
 .vscodeignore
