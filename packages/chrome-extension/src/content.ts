@@ -61,9 +61,9 @@ document.addEventListener('contextmenu', (e) => {
 
 // Input — debounced 500ms, skip password fields
 document.addEventListener('input', (e) => {
+  if (!isRecording) return;
   const target = e.target as HTMLInputElement;
   if (target.type === 'password') return;
-  if (!isRecording) return;
   if (pendingInputTimer) clearTimeout(pendingInputTimer);
   pendingInputEl = target;
   pendingInputTimer = setTimeout(() => {
