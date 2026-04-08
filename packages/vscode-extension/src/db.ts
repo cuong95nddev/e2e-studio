@@ -118,7 +118,7 @@ export class Db {
 
   getSessions(): Session[] {
     return this.db.prepare(
-      'SELECT * FROM sessions ORDER BY created_at DESC'
+      'SELECT * FROM sessions ORDER BY created_at DESC, rowid DESC'
     ).all() as Session[];
   }
 
