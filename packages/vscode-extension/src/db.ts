@@ -75,12 +75,18 @@ export class Db {
     let screenshot_path: string | null = null;
 
     if (params.screenshotBase64) {
-      const dir = path.join(this.screenshotsDir, params.sessionId);
-      fs.mkdirSync(dir, { recursive: true });
-      const filePath = path.join(dir, `${params.stepNumber}.png`);
-      const base64 = params.screenshotBase64.replace(/^data:image\/png;base64,/, '');
-      fs.writeFileSync(filePath, Buffer.from(base64, 'base64'));
-      screenshot_path = path.join('screenshots', params.sessionId, `${params.stepNumber}.png`);
+      try {
+        const dir = path.join(this.screenshotsDir, params.sessionId);
+        fs.mkdirSync(dir, { recursive: true });
+        const filePath = path.join(dir, `${params.stepNumber}.png`);
+        const base64 = params.screenshotBase64.replace(/^data:image\/png;base64,/, '');
+        const buf = Buffer.from(base64, 'base64');
+        if (buf.length === 0) throw new Error('empty buffer');
+        fs.writeFileSync(filePath, buf);
+        screenshot_path = `screenshots/${params.sessionId}/${params.stepNumber}.png`;
+      } catch {
+        // leave screenshot_path as null
+      }
     }
 
     const result = this.db.prepare(`
