@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E2E Studio</title>
+  <style>
+    :root {
+      --background: hsl(222.2 84% 4.9%);
+      --foreground: hsl(210 40% 98%);
+      --card: hsl(222.2 84% 4.9%);
+      --muted: hsl(217.2 32.6% 17.5%);
+      --muted-foreground: hsl(215 20.2% 65.1%);
+      --border: hsl(217.2 32.6% 17.5%);
+      --primary: hsl(210 40% 98%);
+      --primary-foreground: hsl(222.2 47.4% 11.2%);
+      --destructive-bg: hsl(0 62.8% 50%);
+      --destructive-fg: hsl(210 40% 98%);
+      --radius: 0.5rem;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 220px;
+      background: var(--background);
+      color: var(--foreground);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      padding: 16px;
+    }
+    .header {
+      display: flex; align-items: center; gap: 10px;
+      padding-bottom: 12px; margin-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .icon {
+      width: 32px; height: 32px;
+      background: var(--primary); color: var(--primary-foreground);
+      border-radius: calc(var(--radius) - 2px);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+    }
+    .icon.dim { background: var(--muted); color: var(--muted-foreground); }
+    .title { font-size: 14px; font-weight: 600; }
+    .title.dim { color: var(--muted-foreground); }
+    .status {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 8px; border-radius: calc(var(--radius) - 2px);
+      background: var(--muted); font-size: 12px;
+      color: var(--muted-foreground); margin-bottom: 12px;
+    }
+    .status.recording { background: hsl(0 62.8% 15%); color: hsl(0 72% 65%); }
+    .dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .dot.green  { background: hsl(142 71% 45%); }
+    .dot.red    { background: hsl(0 72% 51%); animation: pulse 1.2s ease-in-out infinite; }
+    .dot.gray   { background: hsl(215 16% 40%); }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.25; } }
+    .count { font-size: 12px; color: var(--muted-foreground); text-align: center; margin-bottom: 12px; }
+    .count span { font-weight: 600; color: var(--foreground); }
+    .btn {
+      width: 100%; padding: 8px 14px;
+      border-radius: calc(var(--radius) - 2px);
+      font-size: 13px; font-weight: 500; border: none; cursor: pointer;
+    }
+    .btn-primary  { background: var(--primary); color: var(--primary-foreground); }
+    .btn-stop     { background: var(--destructive-bg); color: var(--destructive-fg); }
+    .btn-disabled { background: var(--muted); color: var(--muted-foreground); cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="icon" id="icon">🎬</div>
+    <div class="title" id="title">E2E Studio</div>
+  </div>
+  <div class="status" id="status">
+    <div class="dot gray" id="dot"></div>
+    <span id="status-text">Connecting…</span>
+  </div>
+  <div class="count" id="count" style="display:none"><span id="count-num">0</span> steps captured</div>
+  <button class="btn btn-disabled" id="btn" disabled>▶ Start Recording</button>
+  <script src="dist/popup.js"></script>
+</body>
+</html>
