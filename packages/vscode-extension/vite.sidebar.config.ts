@@ -6,9 +6,9 @@ export default defineConfig({
   plugins: [react()],
   build: {
     outDir: 'dist/webview',
-    emptyOutDir: true,
+    emptyOutDir: false,
     rollupOptions: {
-      input: { panel: 'src/webview/main.tsx' },
+      input: { sidebar: 'src/webview/sidebar/main.tsx' },
       output: {
         entryFileNames: '[name].js',
         assetFileNames: 'index.[ext]',

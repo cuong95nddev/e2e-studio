@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext): void {
     } else {
       // session-end
       openSessions.delete(sessionId);
-      sidebarProvider.notifySessionUpdated(session);
+      sidebarProvider.clearActiveSession();
       panelManager.stopRecording();
     }
   };

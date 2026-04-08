@@ -76,4 +76,9 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
   notifySessionUpdated(session: Session): void {
     this.view?.webview.postMessage({ type: 'session-updated', session });
   }
+
+  clearActiveSession(): void {
+    this.activeSessionId = null;
+    this.pushSessions();
+  }
 }

@@ -28,10 +28,10 @@
   "scripts": {
     "build": "npm run build:ext && npm run build:webview",
     "build:ext": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:better-sqlite3 --format=cjs --platform=node",
-    "build:webview": "vite build",
+    "build:webview": "vite build && vite build --config vite.sidebar.config.ts",
     "dev": "concurrently --kill-others-on-fail \"npm run dev:ext\" \"npm run dev:webview\"",
     "dev:ext": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:better-sqlite3 --format=cjs --platform=node --watch",
-    "dev:webview": "vite build --watch",
+    "dev:webview": "vite build --watch && vite build --config vite.sidebar.config.ts --watch",
     "test": "vitest run",
     "rebuild": "electron-rebuild -f -w better-sqlite3"
   },

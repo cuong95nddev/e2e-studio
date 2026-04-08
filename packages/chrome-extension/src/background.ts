@@ -74,8 +74,21 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
     // Capture screenshot then send step
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const tabId = tabs[0]?.id;
-      if (!tabId) return;
-      chrome.tabs.captureVisibleTab(tabs[0].windowId!, { format: 'png' }, (dataUrl) => {
+      const windowId = tabs[0]?.windowId;
+      if (!tabId || !windowId) {
+        send({
+          type: 'step',
+          sessionId,
+          stepNumber: step,
+          actionType: msg.actionType,
+          description: msg.description,
+          xpath: msg.xpath ?? null,
+          screenshotBase64: null,
+          timestamp: Date.now(),
+        });
+        return;
+      }
+      chrome.tabs.captureVisibleTab(windowId, { format: 'png' }, (dataUrl) => {
         if (chrome.runtime.lastError) {
           // Send step without screenshot if capture fails
           send({
