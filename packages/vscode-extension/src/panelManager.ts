@@ -21,6 +21,9 @@ export class PanelManager {
   ) {}
 
   open(sessionId: string, recording = false): void {
+    const session = this.db.getSessions().find((s) => s.id === sessionId);
+    if (!session) return;
+
     this.currentSessionId = sessionId;
     this.isRecording = recording;
 
@@ -51,9 +54,7 @@ export class PanelManager {
       });
     }
 
-    const session = this.db.getSessions().find((s) => s.id === sessionId);
-    if (!session) return;
-    const steps = this.db.getSteps(sessionId).map((s) => this.toWebviewStep(s));
+    const steps = this.db.getSteps(sessionId).map((s) => this.toWebviewStep(s, this.panel!.webview));
     this.panel.webview.postMessage({
       type: 'load-session',
       session,
@@ -62,9 +63,9 @@ export class PanelManager {
     });
   }
 
-  private toWebviewStep(step: Step): Step & { screenshot_uri: string | null } {
+  private toWebviewStep(step: Step, webview: vscode.Webview): Step & { screenshot_uri: string | null } {
     const screenshot_uri = step.screenshot_path
-      ? this.panel!.webview.asWebviewUri(
+      ? webview.asWebviewUri(
           vscode.Uri.file(path.join(this.workspaceRoot, 'data', step.screenshot_path))
         ).toString()
       : null;
@@ -73,7 +74,7 @@ export class PanelManager {
 
   pushStep(step: Step): void {
     if (!this.panel || step.session_id !== this.currentSessionId) return;
-    this.panel.webview.postMessage({ type: 'step-added', step: this.toWebviewStep(step) });
+    this.panel.webview.postMessage({ type: 'step-added', step: this.toWebviewStep(step, this.panel.webview) });
   }
 
   stopRecording(): void {
