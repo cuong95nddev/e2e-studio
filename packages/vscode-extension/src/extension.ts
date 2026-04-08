@@ -49,8 +49,9 @@ export function activate(context: vscode.ExtensionContext): void {
   };
 
   // Start WS server
-  wsServer.start().catch((err) => {
+  wsServer.start().catch((err: Error) => {
     vscode.window.showErrorMessage(`E2E Studio: failed to start server — ${err.message}`);
+    db.close();
   });
 
   // Register sidebar provider
@@ -71,8 +72,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
   context.subscriptions.push({
     dispose: () => {
-      wsServer.stop();
-      db.close();
+      wsServer.stop().then(() => db.close()).catch(() => db.close());
     },
   });
 }
