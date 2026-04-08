@@ -32,8 +32,10 @@ export class WsServer {
   constructor(private port: number, private db: Db) {}
 
   start(): Promise<void> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       this.wss = new WebSocketServer({ port: this.port });
+      this.wss.on('error', reject);
+      this.wss.on('listening', resolve);
       this.wss.on('connection', (ws: WebSocket) => {
         ws.on('message', (data) => {
           try {
@@ -44,7 +46,6 @@ export class WsServer {
           }
         });
       });
-      this.wss.on('listening', resolve);
     });
   }
 
@@ -72,6 +73,9 @@ export class WsServer {
   stop(): Promise<void> {
     return new Promise((resolve) => {
       if (!this.wss) { resolve(); return; }
+      for (const client of this.wss.clients) {
+        client.terminate();
+      }
       this.wss.close(() => resolve());
     });
   }

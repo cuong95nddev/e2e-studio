@@ -85,7 +85,7 @@ describe('WsServer', () => {
   });
 
   it('fires onStep callback with step data', async () => {
-    const steps: object[] = [];
+    const steps: import('./db').Step[] = [];
     server.onStep = (step) => steps.push(step);
     const ws = await connect();
     send(ws, { type: 'session-start', sessionId: 'sess-2' });
@@ -102,6 +102,8 @@ describe('WsServer', () => {
     });
     await waitMs(50);
     expect(steps).toHaveLength(1);
+    expect(steps[0].action_type).toBe('navigate');
+    expect(steps[0].description).toBe('Navigate to /home');
     ws.close();
   });
 });
