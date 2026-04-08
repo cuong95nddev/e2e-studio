@@ -5,8 +5,7 @@
   "description": "Capture browser test steps for E2E Studio",
   "permissions": [
     "activeTab",
-    "scripting",
-    "tabs"
+    "scripting"
   ],
   "background": {
     "service_worker": "dist/background.js",
