@@ -1,0 +1,29 @@
+{
+  "name": "e2e-studio-vscode",
+  "displayName": "E2E Studio",
+  "description": "Record and manage browser test steps from VS Code",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.110.0"
+  },
+  "categories": ["Testing"],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "e2eStudio.start",
+        "title": "E2E Studio: Start Recording"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "dev": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --watch"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.110.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.2"
+  }
+}
